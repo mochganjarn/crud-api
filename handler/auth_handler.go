@@ -49,14 +49,6 @@ func ValidateToken(authService service.AuthServiceInterface) http.HandlerFunc {
 	}
 }
 
-func Movie() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		resp := "movie"
-
-		responder.NewHttpResponse(r, w, http.StatusOK, resp, nil)
-	}
-}
-
 func ShowMovie() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		paramsURL := mux.Vars(r)
@@ -73,11 +65,12 @@ func ShowMovie() http.HandlerFunc {
 		//get movie berdasarkan kolom slug
 		result := db.First(&movie, "slug = ?", paramsURL["slug"])
 
-		if result == nil {
-			responder.NewHttpResponse(r, w, http.StatusNotFound, nil, nil)
+		//result := make(map[string]interface{})
+		if result.Error != nil {
+			responder.NewHttpResponse(r, w, http.StatusNotFound, nil, result.Error)
 			return
 		}
-		responder.NewHttpResponse(r, w, http.StatusOK, result.RowsAffected, nil)
+		responder.NewHttpResponse(r, w, http.StatusOK, movie, nil)
 	}
 }
 
