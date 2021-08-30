@@ -13,6 +13,11 @@ type Config struct {
 	LogLevel    string
 	Environment string
 	JWTSecret   string
+	DbUser      string
+	DbPassword  string
+	DbAddr      string
+	DbPort      string
+	DbName      string
 }
 
 func Init() *Config {
@@ -30,6 +35,11 @@ func Init() *Config {
 		LogLevel:    GetString("LOG_LEVEL"),
 		Environment: GetString("ENVIRONMENT"),
 		JWTSecret:   GetString("JWT_SECRET"),
+		DbUser:      GetString("DB_USER"),
+		DbPassword:  GetString("DB_PASSWORD"),
+		DbAddr:      GetString("DB_ADDR"),
+		DbPort:      GetString("DB_PORT"),
+		DbName:      GetString("DB_NAME"),
 	}
 
 	return appConfig
