@@ -90,7 +90,14 @@ func CreateMovie() http.HandlerFunc {
 		slug := r.FormValue("slug")
 		description := r.FormValue("description")
 		duration, _ := strconv.Atoi(r.FormValue("duration"))
-		image := r.FormValue("image")
+		uploadedFile, handler, err := r.FormFile("image")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		image := handler.Filename
+		defer uploadedFile.Close()
 
 		//inisialisasi struct movie sesuai input params
 		movie := gorm_client.Movie{
@@ -125,8 +132,14 @@ func UpdateMovie() http.HandlerFunc {
 		slug := r.FormValue("slug")
 		description := r.FormValue("description")
 		duration, _ := strconv.Atoi(r.FormValue("duration"))
-		image := r.FormValue("image")
+		uploadedFile, handler, err := r.FormFile("image")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
+		image := handler.Filename
+		defer uploadedFile.Close()
 		//inisialisasi struct movie sesuai input params
 		movie := gorm_client.Movie{}
 
